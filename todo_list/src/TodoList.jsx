@@ -9,16 +9,39 @@ export default function TodoList() {
     if (NewTodo.trim() === "") return;
 
     setTodos((prevTodo) => {
-      return [...prevTodo, { task: NewTodo, id: uuidv4() }];
+      return [...prevTodo, { task: NewTodo, id: uuidv4(), IsDone: false }];
     });
 
     setNewTodo("");
   };
   let updateNewValue = (event) => {
     setNewTodo(event.target.value);
-  }; 
-  let DeletTodo = (id) =>{
-    setTodos(todos.filter((todo) =>todo.id != id ));
+  };
+  let DeletTodo = (id) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
+  let MarkIsDone = (id) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (todo.id == id) {
+          return {
+            ...todo,
+           IsDone: true,
+          };
+        } else {
+          return todo;
+        }
+      })
+    );
+  };
+
+  let MarkAsAllDone = () => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => ({
+        ...todo,
+        IsDone: true,
+      }))
+    );
   };
 
   return (
@@ -36,12 +59,19 @@ export default function TodoList() {
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>
-            <span>{todo.task}</span>
-            &nbsp;    &nbsp;    &nbsp;
-            <button onClick={()=>DeletTodo(todo.id)}>delete</button>
+            <span
+              style={todo.IsDone ? { textDecorationLine: "line-through" } : {}}
+            >
+              {todo.task}
+            </span>
+            &nbsp; &nbsp; &nbsp;
+            <button onClick={() => DeletTodo(todo.id)}>delete</button>
+            <button onClick={() => MarkIsDone(todo.id)}>Mark Done</button>
           </li>
         ))}
       </ul>
+      <br />
+      <button onClick={MarkAsAllDone}>All Done</button>
     </div>
   );
 }
