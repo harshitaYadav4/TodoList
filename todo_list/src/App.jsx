@@ -1,13 +1,14 @@
 
 import './App.css'
-import TodoList from "./TodoList.jsx";
+
+import LotteryTicket from './LotteryTicket.jsx';
 
 function App() {
 
 
   return (
     <>
-   <TodoList></TodoList>
+ <LotteryTicket></LotteryTicket>
     </>
   )
 }
